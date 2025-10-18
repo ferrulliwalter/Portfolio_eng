@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio – Walter</title>
+  <meta name="description" content="Portfolio – one-page showcase without a menu." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b120e; --fg:#f4f8f5; --muted:#a8bfb1; --card:#122019; --accent:#2fb369;
+      --radius:20px; --shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; background:var(--bg); color:var(--fg); font-family:'Open Sans', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;}
+    a{color:inherit}
+    .wrap{max-width:1100px; margin:0 auto; padding:28px;}
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:32px 0;}
+    .id{display:flex; gap:18px; align-items:center}
+    .avatar{width:64px; height:64px; border-radius:50%; object-fit:cover; box-shadow:0 4px 16px rgba(0,0,0,.25);} 
+    h1{font-size:32px; line-height:1.1; margin:0}
+    .sub{color:var(--muted); margin-top:6px; font-size:15px}
+    .cta{display:flex; gap:10px; flex-wrap:wrap}
+    .btn{appearance:none; border:none; padding:12px 16px; border-radius:12px; background:var(--accent); color:white; font-weight:600; cursor:pointer; box-shadow:var(--shadow)}
+    .btn.ghost{background:transparent; border:1px solid #2a2f39; color:var(--fg)}
+
+    .hero{background:linear-gradient(135deg, rgba(47,179,105,.15), transparent 60%); padding:26px; border-radius:var(--radius); box-shadow:var(--shadow)}
+
+    .controls{display:flex; gap:12px; align-items:center; justify-content:flex-end; margin:18px 0}
+    .toggle{background:#1a1f27; padding:6px; border-radius:99px; display:flex; gap:6px}
+    .toggle button{padding:8px 12px; border-radius:99px; border:none; background:transparent; color:var(--muted); cursor:pointer}
+    .toggle button.active{background:var(--accent); color:white}
+
+    /* Mosaic grid */
+    .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+    @media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:560px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
+    .card img{width:100%; aspect-ratio:16/10; object-fit:cover}
+    .card .body{padding:14px}
+    .card h3{margin:0 0 6px; font-size:18px}
+    .meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .tag{font-size:12px; color:#d2d7e0; background:#242a34; padding:6px 8px; border-radius:999px}
+
+    /* Slide viewer */
+    .slides{display:none; position:relative; background:var(--card); border-radius:16px; overflow:hidden; box-shadow:var(--shadow)}
+    .slides.active{display:block}
+    .slide-img{width:100%; height:520px; object-fit:cover; display:block}
+    .slide-info{display:flex; justify-content:space-between; align-items:center; padding:12px 14px}
+    .nav{position:absolute; top:50%; transform:translateY(-50%); width:100%; display:flex; justify-content:space-between; padding:0 8px}
+    .nav button{border:none; width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,.35); color:#fff; font-size:18px; cursor:pointer}
+
+    footer{color:var(--muted); text-align:center; padding:36px 0}
+    .links{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+
+    /* Lightbox */
+    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; padding:20px;}
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:90vw; max-height:80vh; border-radius:16px; box-shadow:var(--shadow)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="id">
+        <img class="avatar" src="image_1.jpg" alt="Walter's photo" />
+        <div>
+          <h1>Walter – Portfolio</h1>
+          <div class="sub">A selection of my work</div>
+        </div>
+      </div>
+      <div class="cta">
+        <a class="btn ghost" href="#" target="_blank" rel="noopener">Download CV</a>
+        <button class="btn" id="contactBtn" aria-haspopup="dialog">Contact</button>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="Projects">
+      <div class="controls">
+        <div class="toggle" role="tablist" aria-label="Gallery view">
+          <button id="mosaicBtn" role="tab" aria-selected="true" class="active">Grid</button>
+          <button id="slideBtn" role="tab" aria-selected="false">Slideshow</button>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div id="mosaic" class="grid" aria-live="polite"></div>
+
+      <!-- SLIDESHOW -->
+      <div id="slides" class="slides" aria-live="polite" aria-label="Projects slideshow">
+        <img id="slideImage" class="slide-img" alt="Project preview" src="" />
+        <div class="nav" aria-hidden="false">
+          <button id="prev" aria-label="Previous project">◀</button>
+          <button id="next" aria-label="Next project">▶</button>
+        </div>
+        <div class="slide-info">
+          <div>
+            <strong id="slideTitle">Title</strong>
+            <div id="slideDesc" style="color:var(--muted); font-size:14px"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> Walter. All rights reserved.</div>
+      <div class="links" aria-label="Social links">
+        <a href="mailto:ferrulli.walter@gmail.com">ferrulli.walter@gmail.com</a>
+        <span>·</span>
+        <a href="https://www.linkedin.com/in/walter-ferrulli/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Lightbox for grid -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <img id="lightImg" alt="Preview" src="" />
+  </div>
+
+  <script>
+    // ======= PROJECTS DATA (EN) =======
+    const projects = [
+      {
+        title: "Customer Data Platform – German Fragrance Manufacturer",
+        desc: "End-to-end CDP implementation integrating B2B/B2C online & offline sources. Built a cross-brand/country data hub and proprietary BI.",
+        full: "Led the end-to-end setup and implementation of a comprehensive Customer Data Platform for a leading German fragrance manufacturer. The project integrated diverse data sources—including B2B and B2C sales (online/offline) and digital behavior analytics—into a centralized cross-brand and cross-country data hub, along with a proprietary business intelligence layer. Enabled high-impact use cases like Marketing Mix Modeling, abandoned cart orchestration, and Next Best Action algorithms, improving decision-making, marketing efficiency, and customer engagement across channels.",
+        image: "image_2.png",
+        link: "#",
+        tags: ["CDP", "Data Hub", "BI", "MMM/NBA", "Customer Analytics"]
+      },
+      {
+        title: "Geointelligence – Global Automotive Brand",
+        desc: "GeoIntelligence suite for multi-brand/country network governance: coverage analysis, performance benchmarks, greenfield and scenario sims.",
+        full: "Designed and implemented an advanced Geointelligence solution to optimize network governance for a global, multi-brand automotive company. Integrated a market-leading geo suite to enable strategic network analysis, performance benchmarking, and location intelligence. Brought in real-time KPIs, competitor views, and greenfield/scenario simulations. A robust data strategy ensured consistent ingestion, processing, and visualization across regions, combining internal and 3P data. Result: faster, better decisions on footprint, coverage gaps, and investment priorities.",
+        image: "image_3.png",
+        link: "#",
+        tags: ["GeoIntelligence", "Network Planning", "KPIs", "Location Intelligence"]
+      },
+      {
+        title: "E-commerce Full Potential – Global Eyewear Leader",
+        desc: "Shopify program management: SEO, tech integrations, Shopify Payments, regional expansion, marketing automations.",
+        full: "Led a two-year e-commerce enhancement program for a global eyewear leader: daily operations management, SEO improvements, and key technical integrations on Shopify. Highlights include Shopify Payments rollout, support for regional expansion, and optimization of marketing automation. The initiative streamlined operations, boosted organic visibility, and improved revenue KPIs versus targets.",
+        image: "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop",
+        link: "#",
+        tags: ["E-commerce", "Shopify", "SEO", "Marketing Automation"]
+      },
+      {
+        title: "CRM & Loyalty – Global Fashion & Retail Brand",
+        desc: "Loyalty program definition (naming, tiers, mechanics) and business case. Real-time POS integration, analytics, journey automation.",
+        full: "Designed and implemented a full CRM & Loyalty program for a global fashion brand: from concept (naming, tiers, points/rewards mechanics) and business case to ensure ROI, to execution with real-time logic connecting the loyalty engine to in-store POS systems. Delivered advanced analytics, marketing automation workflows, and optimized journeys—shifting from transactional to relational, increasing loyalty and business impact.",
+        image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1600&auto=format&fit=crop",
+        link: "#",
+        tags: ["CRM", "Loyalty", "Customer Journeys", "Real-time POS"]
+      },
+      {
+        title: "Influencer Marketing Ecosystem – Coffee Machines",
+        desc: "Centralized influencer ecosystem integrated with CRM/MA/e-commerce, HQ-local governance, scalable processes, budget/roll-out framework.",
+        full: "Designed and implemented a comprehensive Influencer Marketing Ecosystem for a leading coffee machine producer, integrating a centralized platform with CRM, marketing automation, and e-commerce systems. Defined governance to ensure global cohesion and local adaptability; developed scalable processes and advanced tools; created a budget framework and roll-out plan for cost-effective execution. Result: stronger awareness, conversion, and loyalty.",
+        image: "https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1600&auto=format&fit=crop",
+        link: "#",
+        tags: ["Influencer", "Governance", "Automation", "E-commerce"]
+      }
+    ];
+
+    // ======= RENDER GRID =======
+    const grid = document.getElementById('mosaic');
+    function renderGrid(){
+      grid.innerHTML = '';
+      projects.forEach((p, i)=>{
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.id = `p-${i}`;
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.title}" data-idx="${i}" />
+          <div class="body">
+            <h3>${p.title}</h3>
+            <div style="color:var(--muted); font-size:14px">${p.desc}</div>
+            <div class="meta">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+            <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+              <a class="btn ghost" href="#slides" data-show-slide="${i}">Details</a>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    // Lightbox & slideshow navigation
+    const lightbox = document.getElementById('lightbox');
+    const lightImg = document.getElementById('lightImg');
+    grid.addEventListener('click', (e)=>{
+      const img = e.target.closest('img');
+      if(img){
+        lightImg.src = img.src;
+        lightbox.classList.add('open');
+        return;
+      }
+      const showBtn = e.target.closest('[data-show-slide]');
+      if(showBtn){
+        const i = parseInt(showBtn.getAttribute('data-show-slide'),10);
+        if(!Number.isNaN(i)){
+          idx = i;
+          setView('slides');
+          renderSlide();
+          document.getElementById('slides').scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }
+    });
+    lightbox.addEventListener('click', ()=> lightbox.classList.remove('open'));
+
+    // ======= SLIDESHOW =======
+    const slidesEl = document.getElementById('slides');
+    const slideImage = document.getElementById('slideImage');
+    const slideTitle = document.getElementById('slideTitle');
+    const slideDesc = document.getElementById('slideDesc');
+    let idx = 0;
+
+    function renderSlide(){
+      const p = projects[idx];
+      slideImage.src = p.image; slideImage.alt = p.title;
+      slideTitle.textContent = p.title;
+      slideDesc.textContent = p.full;
+    }
+
+    document.getElementById('prev').onclick = ()=>{ idx = (idx - 1 + projects.length) % projects.length; renderSlide(); };
+    document.getElementById('next').onclick = ()=>{ idx = (idx + 1) % projects.length; renderSlide(); };
+
+    // ======= TOGGLE VIEWS =======
+    const mosaicBtn = document.getElementById('mosaicBtn');
+    const slideBtn = document.getElementById('slideBtn');
+    const mosaic = document.getElementById('mosaic');
+    function setView(view){
+      const isMosaic = view === 'mosaic';
+      mosaic.style.display = isMosaic ? 'grid' : 'none';
+      slidesEl.classList.toggle('active', !isMosaic);
+      mosaicBtn.classList.toggle('active', isMosaic);
+      mosaicBtn.setAttribute('aria-selected', isMosaic);
+      slideBtn.classList.toggle('active', !isMosaic);
+      slideBtn.setAttribute('aria-selected', !isMosaic);
+      if(!isMosaic) renderSlide();
+    }
+    mosaicBtn.onclick = ()=> setView('mosaic');
+    slideBtn.onclick = ()=> setView('slides');
+
+    // ======= CONTACT =======
+    const contactBtn = document.getElementById('contactBtn');
+    contactBtn.addEventListener('click', ()=>{
+      alert('Contact\n\nEmail: ferrulli.walter@gmail.com\nLinkedIn: https://www.linkedin.com/in/walter-ferrulli/');
+    });
+
+    // ======= INIT =======
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderGrid();
+    setView('mosaic');
+
+    // ======= SELF-TEST =======
+    (function selfTest(){
+      try{
+        console.assert(typeof renderGrid === 'function', 'renderGrid should exist');
+        console.assert(document.querySelectorAll('.card').length === projects.length, 'Grid must render one card per project');
+        console.assert(projects[0].tags.includes('Customer Analytics'), 'Project 0 must include Customer Analytics');
+        console.assert(projects[1].tags.includes('Location Intelligence'), 'Project 1 must include Location Intelligence');
+        const av = document.querySelector('img.avatar');
+        console.assert(av && av.getAttribute('src') === 'image_1.jpg', 'Avatar should be image_1.jpg');
+        const firstBtn = document.querySelector('[data-show-slide="0"]');
+        if(firstBtn){
+          firstBtn.click();
+          console.assert(document.getElementById('slideTitle').textContent === projects[0].title, 'Details click should open slideshow on project 0');
+        }
+        setView('mosaic');
+      }catch(err){
+        console.error('Self-test failed:', err);
+      }
+    })();
+  </script>
+</body>
+</html>
