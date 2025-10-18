@@ -22,9 +22,9 @@
     .avatar{width:64px; height:64px; border-radius:50%; object-fit:cover; box-shadow:0 4px 16px rgba(0,0,0,.25);} 
     h1{font-size:32px; line-height:1.1; margin:0}
     .sub{color:var(--muted); margin-top:6px; font-size:15px}
-    .cta{display:flex; gap:10px; flex-wrap:wrap}
-    .btn{appearance:none; border:none; padding:12px 16px; border-radius:12px; background:var(--accent); color:white; font-weight:600; cursor:pointer; box-shadow:var(--shadow)}
-    .btn.ghost{background:transparent; border:1px solid #2a2f39; color:var(--fg)}
+    .cta{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    .btn{appearance:none; border:none; padding:12px 16px; border-radius:12px; background:var(--accent); color:white; cursor:pointer; box-shadow:var(--shadow); font-family:'Open Sans', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; font-weight:400; font-size:15px;}
+    .btn.ghost{background:transparent; border:1px solid #2a2f39; color:var(--fg);}
 
     .hero{background:linear-gradient(135deg, rgba(47,179,105,.15), transparent 60%); padding:26px; border-radius:var(--radius); box-shadow:var(--shadow)}
 
@@ -47,18 +47,18 @@
     /* Slide viewer */
     .slides{display:none; position:relative; background:var(--card); border-radius:16px; overflow:hidden; box-shadow:var(--shadow)}
     .slides.active{display:block}
-    .slide-img{width:100%; height:520px; object-fit:cover; display:block}
+    .slide-img{width:100%; height:380px; object-fit:cover; display:block}
     .slide-info{display:flex; justify-content:space-between; align-items:center; padding:12px 14px}
     .nav{position:absolute; top:50%; transform:translateY(-50%); width:100%; display:flex; justify-content:space-between; padding:0 8px}
     .nav button{border:none; width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,.35); color:#fff; font-size:18px; cursor:pointer}
 
+    .flag{display:inline-grid; place-items:center; width:36px; height:36px; border-radius:50%; text-decoration:none; box-shadow:var(--shadow); background:transparent; padding:0;}
+    .flag svg{width:36px; height:36px; display:block; border-radius:50%; overflow:hidden;}
+    .flag:hover{transform:translateY(-1px)}
+
     footer{color:var(--muted); text-align:center; padding:36px 0}
     .links{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
 
-    /* Lightbox */
-    .lightbox{position:fixed; inset:0; background:rgba(0,0,0,.75); display:none; align-items:center; justify-content:center; padding:20px;}
-    .lightbox.open{display:flex}
-    .lightbox img{max-width:90vw; max-height:80vh; border-radius:16px; box-shadow:var(--shadow)}
   </style>
 </head>
 <body>
@@ -74,6 +74,34 @@
       <div class="cta">
         <a class="btn ghost" href="./CV_WalterFerrulli.pdf" target="_blank" rel="noopener">Download CV</a>
         <button class="btn" id="contactBtn" aria-haspopup="dialog">Contact</button>
+        <!-- GB flag (current site) -->
+        <a class="flag" href="https://ferrulliwalter.github.io/Portfolio_eng/" target="_blank" rel="noopener" aria-label="English">
+          <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+            <defs><clipPath id="c"><circle cx="18" cy="18" r="18"/></clipPath></defs>
+            <g clip-path="url(#c)">
+              <rect width="36" height="36" fill="#012169"/>
+              <g stroke="#FFF" stroke-width="8" stroke-linecap="square">
+                <path d="M0 0 L36 36"/><path d="M36 0 L0 36"/>
+              </g>
+              <g stroke="#C8102E" stroke-width="4" stroke-linecap="square">
+                <path d="M0 0 L36 36"/><path d="M36 0 L0 36"/>
+              </g>
+              <rect x="0" y="14" width="36" height="8" fill="#FFF"/><rect x="14" y="0" width="8" height="36" fill="#FFF"/>
+              <rect x="0" y="16" width="36" height="4" fill="#C8102E"/><rect x="16" y="0" width="4" height="36" fill="#C8102E"/>
+            </g>
+          </svg>
+        </a>
+        <!-- IT flag -->
+        <a class="flag" href="https://ferrulliwalter.github.io/Portfolio_ita/" target="_blank" rel="noopener" aria-label="Italiano">
+          <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+            <defs><clipPath id="r"><circle cx="18" cy="18" r="18"/></clipPath></defs>
+            <g clip-path="url(#r)">
+              <rect width="36" height="36" fill="#fff"/>
+              <rect width="12" height="36" x="0" fill="#009246"/>
+              <rect width="12" height="36" x="24" fill="#CE2B37"/>
+            </g>
+          </svg>
+        </a>
       </div>
     </header>
 
@@ -114,11 +142,6 @@
     </footer>
   </div>
 
-  <!-- Lightbox for grid -->
-  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
-    <img id="lightImg" alt="Preview" src="" />
-  </div>
-
   <script>
     // ======= PROJECTS DATA (EN) =======
     const projects = [
@@ -128,7 +151,8 @@
         full: "Led the end-to-end setup and implementation of a comprehensive Customer Data Platform for a leading German fragrance manufacturer. The project integrated diverse data sources—including B2B and B2C sales (online/offline) and digital behavior analytics—into a centralized cross-brand and cross-country data hub, along with a proprietary business intelligence layer. Enabled high-impact use cases like Marketing Mix Modeling, abandoned cart orchestration, and Next Best Action algorithms, improving decision-making, marketing efficiency, and customer engagement across channels.",
         image: "image_2.png",
         link: "#",
-        tags: ["CDP", "Data Hub", "BI", "MMM/NBA", "Customer Analytics"]
+        tags: ["CDP", "Data Hub", "BI", "MMM/NBA", "Customer Analytics"],
+        keywords: ["Customer Data Platform","CDP","Business Intelligence","Next Best Action","Marketing Mix Modeling","data hub","engagement","cross-country"]
       },
       {
         title: "Geointelligence – Global Automotive Brand",
@@ -136,7 +160,8 @@
         full: "Designed and implemented an advanced Geointelligence solution to optimize network governance for a global, multi-brand automotive company. Integrated a market-leading geo suite to enable strategic network analysis, performance benchmarking, and location intelligence. Brought in real-time KPIs, competitor views, and greenfield/scenario simulations. A robust data strategy ensured consistent ingestion, processing, and visualization across regions, combining internal and 3P data. Result: faster, better decisions on footprint, coverage gaps, and investment priorities.",
         image: "image_3.png",
         link: "#",
-        tags: ["GeoIntelligence", "Network Planning", "KPIs", "Location Intelligence"]
+        tags: ["GeoIntelligence", "Network Planning", "KPIs", "Location Intelligence"],
+        keywords: ["GeoIntelligence","Location Intelligence","KPI","greenfield","scenario","governance","benchmark"]
       },
       {
         title: "E-commerce Full Potential – Global Eyewear Leader",
@@ -144,7 +169,8 @@
         full: "Led a two-year e-commerce enhancement program for a global eyewear leader: daily operations management, SEO improvements, and key technical integrations on Shopify. Highlights include Shopify Payments rollout, support for regional expansion, and optimization of marketing automation. The initiative streamlined operations, boosted organic visibility, and improved revenue KPIs versus targets.",
         image: "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1600&auto=format&fit=crop",
         link: "#",
-        tags: ["E-commerce", "Shopify", "SEO", "Marketing Automation"]
+        tags: ["E-commerce", "Shopify", "SEO", "Marketing Automation"],
+        keywords: ["Shopify","SEO","Marketing Automation","Payments","expansions","e-commerce"]
       },
       {
         title: "CRM & Loyalty – Global Fashion & Retail Brand",
@@ -152,7 +178,8 @@
         full: "Designed and implemented a full CRM & Loyalty program for a global fashion brand: from concept (naming, tiers, points/rewards mechanics) and business case to ensure ROI, to execution with real-time logic connecting the loyalty engine to in-store POS systems. Delivered advanced analytics, marketing automation workflows, and optimized journeys—shifting from transactional to relational, increasing loyalty and business impact.",
         image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1600&auto=format&fit=crop",
         link: "#",
-        tags: ["CRM", "Loyalty", "Customer Journeys", "Real-time POS"]
+        tags: ["CRM", "Loyalty", "Customer Journeys", "Real-time POS"],
+        keywords: ["CRM","Loyalty","Real-time","POS","journey","analytics","automation"]
       },
       {
         title: "Influencer Marketing Ecosystem – Coffee Machines",
@@ -160,7 +187,8 @@
         full: "Designed and implemented a comprehensive Influencer Marketing Ecosystem for a leading coffee machine producer, integrating a centralized platform with CRM, marketing automation, and e-commerce systems. Defined governance to ensure global cohesion and local adaptability; developed scalable processes and advanced tools; created a budget framework and roll-out plan for cost-effective execution. Result: stronger awareness, conversion, and loyalty.",
         image: "https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1600&auto=format&fit=crop",
         link: "#",
-        tags: ["Influencer", "Governance", "Automation", "E-commerce"]
+        tags: ["Influencer", "Governance", "Automation", "E-commerce"],
+        keywords: ["Influencer","governance","automation","e-commerce","roll-out","budget"]
       }
     ];
 
@@ -173,7 +201,7 @@
         card.className = 'card';
         card.id = `p-${i}`;
         card.innerHTML = `
-          <img src="${p.image}" alt="${p.title}" data-idx="${i}" />
+          <img src="${p.image}" alt="${p.title}" data-idx="${i}" style="pointer-events:none; cursor:default;" />
           <div class="body">
             <h3>${p.title}</h3>
             <div style="color:var(--muted); font-size:14px">${p.desc}</div>
@@ -186,16 +214,8 @@
       });
     }
 
-    // Lightbox & slideshow navigation
-    const lightbox = document.getElementById('lightbox');
-    const lightImg = document.getElementById('lightImg');
+    // Grid -> Slideshow navigation (Details button only)
     grid.addEventListener('click', (e)=>{
-      const img = e.target.closest('img');
-      if(img){
-        lightImg.src = img.src;
-        lightbox.classList.add('open');
-        return;
-      }
       const showBtn = e.target.closest('[data-show-slide]');
       if(showBtn){
         const i = parseInt(showBtn.getAttribute('data-show-slide'),10);
@@ -207,7 +227,6 @@
         }
       }
     });
-    lightbox.addEventListener('click', ()=> lightbox.classList.remove('open'));
 
     // ======= SLIDESHOW =======
     const slidesEl = document.getElementById('slides');
@@ -216,11 +235,28 @@
     const slideDesc = document.getElementById('slideDesc');
     let idx = 0;
 
+    function escapeReg(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function highlight(text, words){
+      // substring highlight (no word boundaries), case-insensitive
+      if(!words || !words.length) return text;
+      let out = text;
+      const used = new Set();
+      words.forEach(w=>{
+        if(!w) return;
+        const key = String(w).toLowerCase();
+        if(used.has(key)) return; used.add(key);
+        const re = new RegExp(`(${escapeReg(String(w))})`, 'gi');
+        out = out.replace(re, '<strong>$1</strong>');
+      });
+      return out;
+    }
+
     function renderSlide(){
       const p = projects[idx];
-      slideImage.src = p.image; slideImage.alt = p.title;
+      slideImage.src = p.image; 
+      slideImage.alt = p.title;
       slideTitle.textContent = p.title;
-      slideDesc.textContent = p.full;
+      slideDesc.innerHTML = highlight(p.full, p.keywords || p.tags);
     }
 
     document.getElementById('prev').onclick = ()=>{ idx = (idx - 1 + projects.length) % projects.length; renderSlide(); };
@@ -238,7 +274,7 @@
       mosaicBtn.setAttribute('aria-selected', isMosaic);
       slideBtn.classList.toggle('active', !isMosaic);
       slideBtn.setAttribute('aria-selected', !isMosaic);
-      if(!isMosaic) renderSlide();
+      if(!isMosaic){ renderSlide(); }
     }
     mosaicBtn.onclick = ()=> setView('mosaic');
     slideBtn.onclick = ()=> setView('slides');
@@ -252,22 +288,39 @@
     // ======= INIT =======
     document.getElementById('year').textContent = new Date().getFullYear();
     renderGrid();
+    // initialize slideshow content to avoid placeholder
+    renderSlide();
     setView('mosaic');
 
-    // ======= SELF-TEST =======
+    // ======= SELF-TESTS =======
     (function selfTest(){
       try{
         console.assert(typeof renderGrid === 'function', 'renderGrid should exist');
         console.assert(document.querySelectorAll('.card').length === projects.length, 'Grid must render one card per project');
+        // Required tags
         console.assert(projects[0].tags.includes('Customer Analytics'), 'Project 0 must include Customer Analytics');
         console.assert(projects[1].tags.includes('Location Intelligence'), 'Project 1 must include Location Intelligence');
+        // Avatar
         const av = document.querySelector('img.avatar');
         console.assert(av && av.getAttribute('src') === 'image_1.jpg', 'Avatar should be image_1.jpg');
+        // Title not placeholder
+        setView('slides');
+        console.assert(document.getElementById('slideTitle').textContent === projects[idx].title, 'Slideshow should show correct title');
+        // Details click opens correct slide 0
         const firstBtn = document.querySelector('[data-show-slide="0"]');
         if(firstBtn){
           firstBtn.click();
-          console.assert(document.getElementById('slideTitle').textContent === projects[0].title, 'Details click should open slideshow on project 0');
+          console.assert(document.getElementById('slideTitle').textContent === projects[0].title, 'Details(0) opens slideshow on project 0');
         }
+        // Highlight tests
+        idx = 0; renderSlide();
+        console.assert(document.getElementById('slideDesc').innerHTML.includes('<strong>Customer Data Platform</strong>'), 'Highlight should bold "Customer Data Platform"');
+        const sample = 'This is a Platform test.';
+        const h = highlight(sample, ['form']);
+        console.assert(h.includes('<strong>form</strong>'), 'Highlight should also bold substrings ("form" in "Platform")');
+        // Mosaic images non-clickable
+        const firstImg = document.querySelector('.card img');
+        console.assert(firstImg && getComputedStyle(firstImg).pointerEvents === 'none', 'Mosaic images must be non-clickable');
         setView('mosaic');
       }catch(err){
         console.error('Self-test failed:', err);
